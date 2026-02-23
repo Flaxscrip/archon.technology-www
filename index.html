@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Archon.Technology - Decentralized Identity Infrastructure</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Archon Protocol infrastructure node. Access the Gatekeeper API, Universal Resolver, DID Explorer, and developer tools.">
+    <link rel="icon" href="favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --accent: #22c55e;
+            --accent-dark: #16a34a;
+            --dark: #1f2937;
+            --darker: #111827;
+            --light-bg: #f9fafb;
+            --border: #e5e7eb;
+            --text: #374151;
+            --text-light: #6b7280;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: #ffffff;
+        }
+        
+        header {
+            background-color: var(--dark);
+            color: white;
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .logo-section img {
+            height: 40px;
+            width: auto;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .logo-text .tech {
+            color: var(--accent);
+        }
+        
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        nav a:hover {
+            color: var(--accent);
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: white;
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero h1 .highlight {
+            color: var(--accent);
+        }
+        
+        .tagline {
+            font-size: 1.35rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 1rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .node-badge {
+            display: inline-block;
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        
+        /* Sections */
+        section {
+            padding: 4rem 0;
+        }
+        
+        section:nth-child(even) {
+            background-color: var(--light-bg);
+        }
+        
+        h2 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+        
+        .section-center h2::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-center {
+            text-align: center;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+        
+        /* Service Grid */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .service-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        section:nth-child(even) .service-card {
+            background-color: white;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.15);
+            border-color: var(--accent);
+        }
+        
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .service-card h3 {
+            margin-top: 0;
+            color: var(--dark);
+        }
+        
+        .service-card p {
+            margin-bottom: 0.75rem;
+        }
+        
+        .service-url {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--accent);
+            background: rgba(34, 197, 94, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        
+        /* API Example */
+        .api-example {
+            background: var(--darker);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            overflow-x: auto;
+        }
+        
+        .api-example pre {
+            color: #e5e7eb;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .api-example .comment {
+            color: #6b7280;
+        }
+        
+        .api-example .url {
+            color: var(--accent);
+        }
+        
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .stat {
+            padding: 1.5rem;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        /* Links section */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .link-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--text);
+            transition: border-color 0.3s;
+        }
+        
+        .link-item:hover {
+            border-color: var(--accent);
+        }
+        
+        .link-icon {
+            font-size: 1.5rem;
+        }
+        
+        .link-item strong {
+            color: var(--dark);
+            display: block;
+        }
+        
+        .link-item span {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--darker);
+            color: rgba(255,255,255,0.7);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        footer p {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 0.75rem 1rem;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            nav {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.25rem;
+            }
+            
+            .tagline {
+                font-size: 1.1rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-section">
+            <img src="archon-logo-white.png" alt="Archon">
+            <span class="logo-text">Archon<span class="tech">.Technology</span></span>
+        </div>
+        <nav>
+            <a href="https://archetech.com/protocol.html">Protocol</a>
+            <a href="https://archon.social">Archon.Social</a>
+            <a href="https://github.com/archetech/archon">GitHub</a>
+        </nav>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Archon <span class="highlight">Infrastructure</span></h1>
+            <p class="tagline">Public Gatekeeper node providing DID resolution, credential verification, and identity services for the Archon Protocol network.</p>
+            <div class="node-badge">🟢 Node Online</div>
+        </div>
+    </section>
+    
+    <section>
+        <div class="container">
+            <h2>Services</h2>
+            <p>This node provides the following public infrastructure for the Archon ecosystem:</p>
+            
+            <div class="service-grid">
+                <a href="/api/v1" class="service-card">
+                    <div class="service-icon">⚡</div>
+                    <h3>Gatekeeper API</h3>
+                    <p>Core DID operations: create, resolve, update, and manage decentralized identifiers.</p>
+                    <code class="service-url">/api/v1/did/</code>
+                </a>
+                
+                <a href="https://explorer.archon.technology" class="service-card">
+                    <div class="service-icon">🔍</div>
+                    <h3>DID Explorer</h3>
+                    <p>Browse and inspect DIDs, view document history, and verify credentials.</p>
+                    <code class="service-url">explorer.archon.technology</code>
+                </a>
+                
+                <a href="https://resolver.archon.technology" class="service-card">
+                    <div class="service-icon">🌐</div>
+                    <h3>Universal Resolver</h3>
+                    <p>Resolve 76+ DID methods including did:cid, did:web, did:key, did:ion, and more.</p>
+                    <code class="service-url">resolver.archon.technology</code>
+                </a>
+                
+                <a href="https://wallet.archon.technology" class="service-card">
+                    <div class="service-icon">👛</div>
+                    <h3>Web Wallet</h3>
+                    <p>Browser-based wallet for managing DIDs, credentials, and signing challenges.</p>
+                    <code class="service-url">wallet.archon.technology</code>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section-center">
+        <div class="container">
+            <h2>Quick Start</h2>
+            <p>Resolve any DID using the Gatekeeper API:</p>
+            
+            <div class="api-example">
+<pre><span class="comment"># Resolve a did:cid identifier</span>
+curl <span class="url">https://archon.technology/api/v1/did/did:cid:bagaaieraxdxq4fm...</span>
+
+<span class="comment"># Check node version</span>
+curl <span class="url">https://archon.technology/api/v1/version</span>
+
+<span class="comment"># Use the Universal Resolver for any DID method</span>
+curl <span class="url">https://resolver.archon.technology/1.0/identifiers/did:web:example.com</span></pre>
+            </div>
+        </div>
+    </section>
+    
+    <section>
+        <div class="container">
+            <h2>Ecosystem</h2>
+            
+            <div class="links-grid">
+                <a href="https://archetech.com" class="link-item">
+                    <span class="link-icon">🏛️</span>
+                    <div>
+                        <strong>Archetech</strong>
+                        <span>Company behind Archon Protocol</span>
+                    </div>
+                </a>
+                
+                <a href="https://archon.social" class="link-item">
+                    <span class="link-icon">@</span>
+                    <div>
+                        <strong>Archon.Social</strong>
+                        <span>Decentralized naming service</span>
+                    </div>
+                </a>
+                
+                <a href="https://archetech.com/protocol.html" class="link-item">
+                    <span class="link-icon">📄</span>
+                    <div>
+                        <strong>Protocol Spec</strong>
+                        <span>Technical documentation</span>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/archetech/archon" class="link-item">
+                    <span class="link-icon">💻</span>
+                    <div>
+                        <strong>GitHub</strong>
+                        <span>Source code &amp; contributions</span>
+                    </div>
+                </a>
+                
+                <a href="https://archetech.com/agents.html" class="link-item">
+                    <span class="link-icon">🤖</span>
+                    <div>
+                        <strong>For AI Agents</strong>
+                        <span>Integration guide</span>
+                    </div>
+                </a>
+                
+                <a href="https://www.npmjs.com/search?q=%40didcid" class="link-item">
+                    <span class="link-icon">📦</span>
+                    <div>
+                        <strong>NPM Packages</strong>
+                        <span>@didcid/* libraries</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section-center">
+        <div class="container">
+            <h2>Run Your Own Node</h2>
+            <p>Archon is fully decentralized. Run your own Gatekeeper node to strengthen the network.</p>
+            
+            <div class="api-example" style="text-align: left;">
+<pre><span class="comment"># Install the Archon CLI</span>
+npm install -g @didcid/archon
+
+<span class="comment"># Initialize and start your node</span>
+archon init
+archon start
+
+<span class="comment"># Your node is now part of the network!</span></pre>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <p>Operated by <a href="https://archetech.com">Archetech</a> · Powered by the <a href="https://archetech.com/protocol.html">Archon Protocol</a></p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">did:web:archon.technology</p>
+    </footer>
+</body>
+</html>
