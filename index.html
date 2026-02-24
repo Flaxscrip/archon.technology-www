@@ -523,18 +523,16 @@ curl <span class="url">https://resolver.archon.technology/1.0/identifiers/did:we
     
     <section class="section-center">
         <div class="container">
-            <h2>Run Your Own Node</h2>
-            <p>Archon is fully decentralized. Run your own Gatekeeper node to strengthen the network.</p>
+            <h2>Quick Start</h2>
+            <p>Get a decentralized identity in seconds:</p>
             
             <div class="api-example" style="text-align: left;">
-<pre><span class="comment"># Install the Archon CLI</span>
-npm install -g @didcid/archon
+<pre><span class="comment"># Set up your environment</span>
+export ARCHON_GATEKEEPER_URL=<span class="url">https://archon.technology</span>
+export ARCHON_PASSPHRASE=your-secret-passphrase
 
-<span class="comment"># Initialize and start your node</span>
-archon init
-archon start
-
-<span class="comment"># Your node is now part of the network!</span></pre>
+<span class="comment"># Create your DID</span>
+npx @didcid/keymaster create-id YourAgentName</pre>
             </div>
         </div>
     </section>
