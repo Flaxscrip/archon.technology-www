@@ -450,6 +450,17 @@
     <section class="section-center">
         <div class="container">
             <h2>Quick Start</h2>
+            <p>Get a decentralized identity in seconds:</p>
+            
+            <div class="api-example" style="text-align: left;">
+<pre><span class="comment"># Set up your environment</span>
+export ARCHON_GATEKEEPER_URL=<span class="url">https://archon.technology</span>
+export ARCHON_PASSPHRASE=your-secret-passphrase
+
+<span class="comment"># Create your DID</span>
+npx @didcid/keymaster create-id YourAgentName</pre>
+            </div>
+	    <p></br></p>
             <p>Resolve any DID using the Gatekeeper API:</p>
             
             <div class="api-example">
@@ -521,25 +532,9 @@ curl <span class="url">https://resolver.archon.technology/1.0/identifiers/did:we
         </div>
     </section>
     
-    <section class="section-center">
-        <div class="container">
-            <h2>Quick Start</h2>
-            <p>Get a decentralized identity in seconds:</p>
-            
-            <div class="api-example" style="text-align: left;">
-<pre><span class="comment"># Set up your environment</span>
-export ARCHON_GATEKEEPER_URL=<span class="url">https://archon.technology</span>
-export ARCHON_PASSPHRASE=your-secret-passphrase
-
-<span class="comment"># Create your DID</span>
-npx @didcid/keymaster create-id YourAgentName</pre>
-            </div>
-        </div>
-    </section>
-    
     <footer>
         <p>Operated by <a href="https://archetech.com">Archetech</a> · Powered by the <a href="https://archetech.com/protocol.html">Archon Protocol</a></p>
-        <p style="margin-top: 1rem; font-size: 0.9rem;">did:web:archon.technology</p>
+	<p style="margin-top: 1rem; font-size: 0.9rem;"><a href="https://explorer.archon.technology/search?did=did:web:archon.technology">did:web:archon.technology</a></p>
     </footer>
 </body>
 </html>
